@@ -1,103 +1,213 @@
-# Liste complète des commandes Cisco
+
+# Commandes Cisco Complètes avec Explications et Exemples
+
+## **1. Commandes de base pour la navigation**
+
+### `enable`
+- **Description** : Passe en mode privilégié (exec).
+- **Exemple** :
+  ```plaintext
+  Switch> enable
+  Switch#
+  ```
+
+### `configure terminal`
+- **Description** : Accède au mode de configuration globale.
+- **Exemple** :
+  ```plaintext
+  Switch# configure terminal
+  Enter configuration commands, one per line. End with CNTL/Z.
+  Switch(config)#
+  ```
 
 ---
 
-## 1. Commandes de base
+## **2. Commandes pour les interfaces**
 
-| **Commande**                 | **Description**                                                                 | **Exemple**                          |
-|-------------------------------|---------------------------------------------------------------------------------|--------------------------------------|
-| `show clock`                 | Affiche l'heure et la date système.                                             | `Router# show clock`                |
-| `hostname [nom]`             | Modifie le nom de l'appareil.                                                   | `Router(config)# hostname MonRouteur` |
-| `reload`                     | Redémarre le périphérique.                                                      | `Router# reload`                    |
-| `write erase`                | Efface la configuration sauvegardée (startup-config).                           | `Router# write erase`               |
+### **Configuration d’une interface IP**
+- **Commande** :
+  ```plaintext
+  interface GigabitEthernet0/1
+  ip address 192.168.1.1 255.255.255.0
+  no shutdown
+  ```
+- **Description** :
+  - `interface` : Sélection de l'interface.
+  - `ip address` : Attribution d'une adresse IP.
+  - `no shutdown` : Activation de l'interface.
 
----
+- **Exemple** :
+  ```plaintext
+  Switch# configure terminal
+  Switch(config)# interface GigabitEthernet0/1
+  Switch(config-if)# ip address 192.168.1.1 255.255.255.0
+  Switch(config-if)# no shutdown
+  ```
 
-## 2. Commandes de gestion de fichiers
-
-| **Commande**                              | **Description**                                                                 | **Exemple**                                      |
-|-------------------------------------------|---------------------------------------------------------------------------------|------------------------------------------------|
-| `copy [source] [destination]`             | Copie des fichiers entre périphériques.                                         | `Router# copy running-config startup-config`   |
-| `erase startup-config`                    | Supprime la configuration de démarrage.                                         | `Router# erase startup-config`                |
-| `dir`                                     | Liste les fichiers présents dans un répertoire.                                 | `Router# dir flash:`                          |
-| `delete [nom_fichier]`                    | Supprime un fichier spécifique.                                                | `Router# delete flash:config.old`             |
-
----
-
-## 3. Configuration d'interface avancée
-
-| **Commande**                   | **Description**                                                       | **Exemple**                                    |
-|--------------------------------|-----------------------------------------------------------------------|-----------------------------------------------|
-| `duplex [full|half|auto]`      | Configure le mode duplex d'une interface.                             | `Router(config-if)# duplex full`             |
-| `speed [auto|10|100|1000]`     | Définit la vitesse d'une interface.                                   | `Router(config-if)# speed 100`               |
-| `switchport mode trunk`        | Configure une interface en mode trunk.                                | `Switch(config-if)# switchport mode trunk`   |
-| `switchport trunk allowed vlan [vlan_list]` | Spécifie les VLANs autorisés sur une interface trunk.                | `Switch(config-if)# switchport trunk allowed vlan 1,10,20` |
-
----
-
-## 4. Configuration VLAN avancée
-
-| **Commande**                        | **Description**                                                                   | **Exemple**                                        |
-|-------------------------------------|-----------------------------------------------------------------------------------|--------------------------------------------------|
-| `vlan database`                     | Permet de gérer les VLANs via une base de données dédiée.                         | `Switch# vlan database`                         |
-| `show vlan brief`                   | Affiche un résumé de la configuration des VLANs.                                  | `Switch# show vlan brief`                       |
-| `vlan [vlan_id]`                    | Crée un nouveau VLAN.                                                             | `Switch(config)# vlan 100`                      |
-| `vtp mode [server|client|transparent]` | Configure le mode VTP (VLAN Trunking Protocol).                                  | `Switch(config)# vtp mode server`              |
-| `vtp domain [nom_domaine]`          | Définit le domaine VTP.                                                           | `Switch(config)# vtp domain MonDomaine`         |
+### **Afficher les interfaces et leurs statuts**
+- **Commande** :
+  ```plaintext
+  show ip interface brief
+  ```
+- **Exemple** :
+  ```plaintext
+  Interface              IP-Address      OK? Method Status                Protocol
+  GigabitEthernet0/0     192.168.1.1     YES manual up                    up
+  GigabitEthernet0/1     unassigned      YES unset  administratively down down
+  ```
 
 ---
 
-## 5. Routage avancé
+## **3. Commandes pour VLAN**
 
-| **Commande**                      | **Description**                                                                  | **Exemple**                                   |
-|-----------------------------------|----------------------------------------------------------------------------------|----------------------------------------------|
-| `ip default-gateway [ip]`         | Définit une passerelle par défaut pour les périphériques de niveau 2.            | `Switch(config)# ip default-gateway 192.168.1.1` |
-| `show ip route`                   | Affiche la table de routage.                                                     | `Router# show ip route`                      |
-| `router rip`                      | Active le protocole RIP.                                                         | `Router(config)# router rip`                 |
-| `network [réseau]`                | Ajoute un réseau dans un processus de routage dynamique.                         | `Router(config-router)# network 10.0.0.0`    |
-| `no auto-summary`                 | Désactive le résumé automatique des routes pour les protocoles comme RIP.        | `Router(config-router)# no auto-summary`     |
+### **Création d’un VLAN**
+- **Commande** :
+  ```plaintext
+  vlan 10
+  name Sales
+  ```
+- **Description** :
+  - `vlan` : Crée un VLAN.
+  - `name` : Donne un nom au VLAN.
 
----
+- **Exemple** :
+  ```plaintext
+  Switch# configure terminal
+  Switch(config)# vlan 10
+  Switch(config-vlan)# name Sales
+  ```
 
-## 6. Sécurité avancée
-
-| **Commande**                    | **Description**                                                               | **Exemple**                                      |
-|---------------------------------|-------------------------------------------------------------------------------|------------------------------------------------|
-| `service password-encryption`  | Crypte les mots de passe dans le fichier de configuration.                    | `Router(config)# service password-encryption` |
-| `banner motd [texte]`           | Configure un message d'accueil pour les utilisateurs qui se connectent.      | `Router(config)# banner motd ^C Bienvenue! ^C` |
-| `crypto key generate rsa`       | Génère des clés RSA pour SSH.                                                | `Router(config)# crypto key generate rsa`     |
-| `username [nom] password [mot_de_passe]` | Crée un utilisateur avec mot de passe.                                     | `Router(config)# username admin password 1234` |
-
----
-
-## 7. Commandes de QoS
-
-| **Commande**                        | **Description**                                                                 | **Exemple**                                  |
-|-------------------------------------|---------------------------------------------------------------------------------|---------------------------------------------|
-| `class-map [nom]`                   | Crée une classe pour la QoS.                                                    | `Router(config)# class-map VOIP`            |
-| `policy-map [nom]`                  | Crée une politique QoS pour une classe.                                         | `Router(config)# policy-map PRIORITE_VOIP`  |
-| `service-policy [nom]`              | Applique une politique QoS sur une interface.                                   | `Router(config-if)# service-policy input VOIP_POLICY` |
-
----
-
-## 8. Dépannage avancé
-
-| **Commande**                 | **Description**                                                                    | **Exemple**                             |
-|------------------------------|------------------------------------------------------------------------------------|-----------------------------------------|
-| `show interfaces [interface]` | Affiche les détails d'une interface spécifique, y compris les statistiques.       | `Router# show interfaces GigabitEthernet0/1` |
-| `show ip protocols`          | Affiche les informations des protocoles de routage activés.                       | `Router# show ip protocols`            |
-| `debug ip [protocole]`       | Active le débogage pour un protocole spécifique.                                   | `Router# debug ip rip`                 |
-| `terminal monitor`           | Active l'affichage des messages de débogage sur le terminal.                      | `Router# terminal monitor`             |
+### **Assigner un VLAN à un port**
+- **Commande** :
+  ```plaintext
+  interface GigabitEthernet0/2
+  switchport mode access
+  switchport access vlan 10
+  ```
+- **Exemple** :
+  ```plaintext
+  Switch(config)# interface GigabitEthernet0/2
+  Switch(config-if)# switchport mode access
+  Switch(config-if)# switchport access vlan 10
+  ```
 
 ---
 
-## 9. Commandes VRF
+## **4. Commandes de routage**
 
-| **Commande**                     | **Description**                                                                  | **Exemple**                               |
-|----------------------------------|----------------------------------------------------------------------------------|------------------------------------------|
-| `ip vrf [nom]`                   | Crée une instance de routage VRF.                                               | `Router(config)# ip vrf MON_VRF`         |
-| `ip vrf forwarding [nom]`        | Associe une interface à un VRF.                                                 | `Router(config-if)# ip vrf forwarding MON_VRF` |
+### **Route statique**
+- **Commande** :
+  ```plaintext
+  ip route 0.0.0.0 0.0.0.0 192.168.1.254
+  ```
+- **Description** : Définit une route par défaut (passerelle de secours).
+
+- **Exemple** :
+  ```plaintext
+  Router(config)# ip route 0.0.0.0 0.0.0.0 192.168.1.254
+  ```
+
+### **Routage OSPF**
+- **Commande** :
+  ```plaintext
+  router ospf 1
+  network 192.168.1.0 0.0.0.255 area 0
+  ```
+- **Exemple** :
+  ```plaintext
+  Router# configure terminal
+  Router(config)# router ospf 1
+  Router(config-router)# network 192.168.1.0 0.0.0.255 area 0
+  ```
 
 ---
 
-N'hésite pas à demander plus de détails sur une commande spécifique si besoin !
+## **5. Commandes de sécurité**
+
+### **Configurer un mot de passe pour le mode privilégié**
+- **Commande** :
+  ```plaintext
+  enable secret Password123
+  ```
+- **Exemple** :
+  ```plaintext
+  Switch(config)# enable secret Password123
+  ```
+
+### **Configurer l’accès SSH**
+- **Commandes** :
+  ```plaintext
+  ip domain-name mydomain.com
+  crypto key generate rsa
+  username admin privilege 15 secret Password123
+  line vty 0 4
+  transport input ssh
+  login local
+  ```
+- **Exemple** :
+  ```plaintext
+  Switch(config)# ip domain-name mydomain.com
+  Switch(config)# crypto key generate rsa
+  The name for the keys will be: Switch.mydomain.com
+  How many bits in the modulus [512]: 1024
+  % Generating 1024 bit RSA keys, keys will be non-exportable...
+  Switch(config)# username admin privilege 15 secret Password123
+  Switch(config)# line vty 0 4
+  Switch(config-line)# transport input ssh
+  Switch(config-line)# login local
+  ```
+
+---
+
+## **6. Commandes de sauvegarde et restauration**
+
+### **Sauvegarder la configuration en cours**
+- **Commande** :
+  ```plaintext
+  copy running-config startup-config
+  ```
+- **Exemple** :
+  ```plaintext
+  Switch# copy running-config startup-config
+  Destination filename [startup-config]? 
+  Building configuration...
+  [OK]
+  ```
+
+### **Restaurer la configuration depuis un serveur TFTP**
+- **Commande** :
+  ```plaintext
+  copy tftp running-config
+  ```
+- **Exemple** :
+  ```plaintext
+  Address or name of remote host []? 192.168.1.100
+  Source filename []? backup-config
+  Destination filename [running-config]? 
+  Accessing tftp://192.168.1.100/backup-config...
+  ```
+
+---
+
+## **7. Débogage**
+
+### **Activer le débogage OSPF**
+- **Commande** :
+  ```plaintext
+  debug ip ospf events
+  ```
+- **Arrêter le débogage**
+  ```plaintext
+  undebug all
+  ```
+- **Exemple** :
+  ```plaintext
+  Router# debug ip ospf events
+  OSPF events debugging is on
+  Router# undebug all
+  All possible debugging has been turned off
+  ```
+
+---
+
+Ce format Markdown facilite la lecture et l’organisation des commandes avec leurs descriptions et exemples. Si vous souhaitez ajouter d’autres catégories ou approfondir certains sujets, faites-le-moi savoir ! 😊
